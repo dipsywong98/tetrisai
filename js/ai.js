@@ -9,7 +9,7 @@ AI.prototype._best = function(grid, workingPieces, workingPieceIndex){
     var best = null;
     var bestScore = null;
     var workingPiece = workingPieces[workingPieceIndex];
-
+    var bestRotation = 0
     for(var rotation = 0; rotation < 4; rotation++){
         var _piece = workingPiece.clone();
         for(var i = 0; i < rotation; i++){
@@ -35,15 +35,17 @@ AI.prototype._best = function(grid, workingPieces, workingPieceIndex){
             if (score > bestScore || bestScore == null){
                 bestScore = score;
                 best = _piece.clone();
+                bestRotation = rotation
             }
+            // console.log(score)
 
             _piece.column++;
         }
     }
 
-    return {piece:best, score:bestScore};
+    return {piece:best, score:bestScore,rotation:bestRotation};
 };
 
 AI.prototype.best = function(grid, workingPieces){
-    return this._best(grid, workingPieces, 0).piece;
+    return this._best(grid, workingPieces, 0);
 };

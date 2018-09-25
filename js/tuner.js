@@ -41,7 +41,7 @@ function Tuner(){
                 var score = 0;
                 var numberOfMoves = 0;
                 while((numberOfMoves++) < maxNumberOfMoves && !grid.exceeded()){
-                    workingPiece = ai.best(grid, workingPieces);
+                    workingPiece = ai.best(grid, workingPieces).piece;
                     while(workingPiece.moveDown(grid));
                     grid.addPiece(workingPiece);
                     score += grid.clearLines();
@@ -132,6 +132,12 @@ function Tuner(){
         // Initial population generation
         for(var i = 0; i < 100; i++){
             candidates.push(generateRandomCandidate());
+        }
+        candidates[0]={
+            heightWeight: 0.510066,
+            linesWeight: 0.760666,
+            holesWeight: 0.35663,
+            bumpinessWeight: 0.184483
         }
 
         console.log('Computing fitnesses of initial population...');

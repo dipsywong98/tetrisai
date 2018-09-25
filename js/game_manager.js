@@ -1,3 +1,23 @@
+window.output = []
+
+function getRightShift(piece){
+    let i = 0
+    for(i=0; i<piece.cells.length; i++){
+        let flag = false
+        for(let j=0;j<piece.cells.length;j++){
+            if(piece.cells[j][i]!==0){
+                flag=true
+                // console.log('non zero')
+                break
+            }
+        }
+        if(flag){
+            break
+        }
+    }
+    return piece.column + i
+}
+
 function GameManager(){
     var gridCanvas = document.getElementById('grid-canvas');
     var nextCanvas = document.getElementById('next-canvas');
@@ -10,6 +30,7 @@ function GameManager(){
 
     var grid = new Grid(22, 10);
     var rpg = new RandomPieceGenerator();
+    //{"heightWeight":0.5080758795241423,"linesWeight":0.41935224912590485,"holesWeight":0.43328889095977086,"bumpinessWeight":0.6150311608119268,"fitness":319}
     var ai = new AI(0.510066, 0.760666, 0.35663, 0.184483);
     var workingPieces = [null, rpg.nextPiece()];
     var workingPiece = null;
@@ -129,7 +150,11 @@ function GameManager(){
 
         if(isAiActive){
             isKeyEnabled = false;
-            workingPiece = ai.best(grid, workingPieces);
+            let data = ai.best(grid, workingPieces);
+            workingPiece = data.piece
+            const col = getRightShift(workingPiece)
+            // console.log('best piece',workingPiece,data.rotation,col)
+            window.output.push(''+data.rotation+col)
             startWorkingPieceDropAnimation(function(){
                 while(workingPiece.moveDown(grid)); // Drop working piece
                 if(!endTurn()){
@@ -142,6 +167,7 @@ function GameManager(){
             isKeyEnabled = true;
             gravityTimer.resetForward(500);
         }
+        // console.log(workingPieces.length)
     }
 
     // Process end of turn

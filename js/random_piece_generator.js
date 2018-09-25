@@ -1,17 +1,35 @@
+let sequence = "TZZSZTZZSZSTSSZZZSTZTZSSSSTTTZTTZZTSSZSSTTTZTSTZSZZTTSSTZSZSSSTSSSZZTSTSSTSZSTSSTTZTSZTSTTZSZTSTSZTS"
+const peiceDict = {
+    O:0,
+    J:1,
+    L:2,
+    Z:3,
+    S:4,
+    T:5,
+    I:6
+}
+function LoadSequence(str){
+    return str.split('').map(s=>peiceDict[s])
+}
+sequence = LoadSequence(sequence+'O')
+
 function RandomPieceGenerator(){
     Math.seed
-    this.bag = [0, 1, 2, 3, 4, 5, 6];
+    this.bag = [3,4,5];
     this.shuffleBag();
     this.index = -1;
 };
 
 RandomPieceGenerator.prototype.nextPiece = function(){
-    this.index++;
-    if (this.index >= this.bag.length){
+    // this.index++;
+    // if (this.index >= this.bag.length){
         this.shuffleBag();
         this.index = 0;
-    }
-    return Piece.fromIndex(this.bag[this.index]);
+    // }
+    const R = Piece.fromIndex(this.bag[this.index]);
+    // const R = Piece.fromIndex(sequence.shift())
+    // console.log('next peice',R)
+    return R
 };
 
 RandomPieceGenerator.prototype.shuffleBag = function() {
